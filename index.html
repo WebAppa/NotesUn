@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRAINING</title>
+
+    <style>
+
+        p{
+            color: aliceblue;
+        }
+
+        button{
+            padding: 7px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 200px;
+            height: 40px;
+        }
+
+    </style>
+
+<script>
+
+const kommentar = [];
+
+const loadCommentsFromStorage = () => {
+    const retrievedComments = JSON.parse(localStorage.getItem('kommentar') || '[]');
+    kommentar.push(...retrievedComments);
+    renderListe(); // Add this line to render the comments immediately after loading
+}
+
+const renderListe = () => {
+    const kommiListe = kommentar.map((kommi, i) => `<p>${kommi}</p>
+    <button onclick="removeComment(${i})" >Delete</button>`).join('');
+
+    document.querySelector('.js-liste').innerHTML = kommiListe;
+}
+
+const removeComment = (index) => {
+    kommentar.splice(index, 1);
+    saveCommentsToStorage();
+    renderListe();
+}
+
+const addComment = () => {
+    const inputElement = document.querySelector('.js-input');
+    const newComment = inputElement.value;
+
+    if (newComment) {
+        kommentar.push(newComment);
+        inputElement.value = '';
+        saveCommentsToStorage();
+        renderListe();
+    }
+}
+
+const saveCommentsToStorage = () => {
+    localStorage.setItem('kommentar', JSON.stringify(kommentar));
+}
+
+// Load comments when the script loads
+loadCommentsFromStorage();
+
+
+</script>
+
+
+
+</head>
+
+<body bgcolor="#262626">
+
+    
+    <p>Unencrypted Notes Website:</p>
+
+    <textarea class ="js-input" rows="2" cols="70" name="comment" placeholder="Deine Notiz"></textarea>
+
+    <button onclick="addComment()">ADD</button>
+
+
+    <div class="js-liste" >
+
+
+        
+    </div>
+
+
+
+
+    
+</body>
+
+
+
+
+</html>
